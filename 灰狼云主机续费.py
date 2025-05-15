@@ -11,16 +11,16 @@ from datetime import datetime
 # =================== 配置参数 ===================
 class Config:
     # 主机配置
-    HOST_ID = 9838
-    API_KEY = 5b789449588970a25706918a3fc82010
-    RENEW_MONTH = 1
+    HOST_ID = '9838'
+    API_KEY = '5b789449588970a25706918a3fc82010'
+    RENEW_MONTH = '1'
     
     # 邮件配置
-    SMTP_SERVER = smtp.qiye.163.com
-    SMTP_PORT = 465
-    EMAIL_USER = scheduled_task@bee-zh.cn
+    SMTP_SERVER = 'smtp.qiye.163.com'
+    SMTP_PORT = '465'
+    EMAIL_USER = 'scheduled_task@bee-zh.cn'
     EMAIL_PASSWORD = os.environ.get('HUILANGYUANXVFEI_SMTP_PASSWORD')
-    RECIPIENT = wdsjwyf@qq.com
+    RECIPIENT = 'wdsjwyf@qq.com'
 
     # 日志目录
     LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
