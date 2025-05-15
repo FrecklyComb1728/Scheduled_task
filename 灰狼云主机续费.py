@@ -19,7 +19,7 @@ class Config:
     SMTP_SERVER = 'smtphz.qiye.163.com'
     SMTP_PORT = '465'
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
-    EMAIL_PASSWORD = os.environ.get('HUILANGYUANXVFEI_SMTP_PASSWORD')
+    HUILANGYUANXVFEI_SMTP_PASSWORD = os.environ.get('HUILANGYUANXVFEI_SMTP_PASSWORD')
     RECIPIENT = 'wdsjwyf@qq.com'
 
     # 日志目录
@@ -62,7 +62,7 @@ def send_email(subject, content):
         msg['To'] = Config.RECIPIENT
         
         with smtplib.SMTP_SSL(Config.SMTP_SERVER, Config.SMTP_PORT) as server:
-            server.login(Config.EMAIL_USER, Config.EMAIL_PASSWORD)
+            server.login(Config.EMAIL_USER, Config.HUILANGYUANXVFEI_SMTP_PASSWORD)
             server.sendmail(Config.EMAIL_USER, [Config.RECIPIENT], msg.as_string())
         return True
     except Exception as e:
