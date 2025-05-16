@@ -7,7 +7,7 @@ on:
 jobs:
   renew:
     runs-on: ubuntu-latest
-    # environment: 灰狼云续费
+    environment: 灰狼云续费
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
