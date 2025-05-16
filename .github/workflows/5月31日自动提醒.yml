@@ -1,7 +1,7 @@
-name: 灰狼云主机续费
+name: 5月31日自动提醒
 on:
   schedule:
-    - cron: "0 23 27 * *"
+   - cron: "0 23 30 5 *"
   workflow_dispatch:
 
 jobs:
