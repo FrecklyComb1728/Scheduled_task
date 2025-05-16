@@ -100,7 +100,7 @@ def format_result_html(result):
 
 def print_environment_variables():
     logger.info("===== 当前环境变量配置 =====")
-    logger.info(f"SMTP_PASSWORD: {'已配置' if Config.SMTP_PASSWORD else '未配置'}")
+    logger.info(f"HUILANGYUNXVFEI_SMTP_PASSWORD: {'已配置' if Config.SMTP_PASSWORD else '未配置'}")
     logger.info("==========================")
 
 def renew_host():
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     
     # 检查环境变量配置
     if not Config.SMTP_PASSWORD:
-        logger.warning("SMTP_PASSWORD环境变量未设置，邮件通知功能可能无法正常工作")
+        logger.warning("HUILANGYUNXVFEI_SMTP_PASSWORD环境变量未设置，邮件通知功能可能无法正常工作")
     
     result = renew_host()
     
@@ -173,4 +173,4 @@ if __name__ == '__main__':
     else:
         logger.error(f"主机续费操作失败: {result.get('msg')}")
     
-    logger.info("===== 灰狼云主机续费脚本结束 =====") 
+    logger.info("===== 灰狼云主机续费脚本结束 =====")
