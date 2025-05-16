@@ -19,7 +19,7 @@ class Config:
     SMTP_SERVER = 'smtp.qiye.163.com'
     SMTP_PORT = '465'
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
-    EMAIL_PASSWORD = os.environ.get('HUILANGYUNXVFEI_SMTP_PASSWORD')
+    EMAIL_PASSWORD = os.environ.get('TIXINGYOUXIANG_SMTP_PASSWORD')
     RECIPIENT = 'wdsjwyf@qq.com'
 
     # 日志目录
