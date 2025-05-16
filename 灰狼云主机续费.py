@@ -109,6 +109,44 @@ def print_environment_variables():
         logger.info("SMTP_PASSWORD: 未配置或检查失败")
     logger.info("==========================")
 
+def execute_powershell_command(command):
+    """执行PowerShell命令并返回结果"""
+    try:
+        # 使用PowerShell执行命令
+        process = subprocess.run(
+            ['powershell', '-Command', command],
+            capture_output=True,
+            text=True,
+            shell=True
+        )
+        
+        # 记录命令执行情况
+        logger.info(f"执行PowerShell命令: {command}")
+        
+        if process.returncode == 0:
+            logger.info("命令执行成功")
+            if process.stdout:
+                logger.info(f"命令输出: {process.stdout}")
+            return {
+                'success': True,
+                'output': process.stdout,
+                'error': None
+            }
+        else:
+            logger.error(f"命令执行失败: {process.stderr}")
+            return {
+                'success': False,
+                'output': None,
+                'error': process.stderr
+            }
+    except Exception as e:
+        error_msg = f"执行PowerShell命令时发生错误: {str(e)}"
+        logger.error(error_msg)
+        return {
+            'success': False,
+            'output': None,
+            'error': error_msg
+        }
 
 def renew_host():
     try:
