@@ -1,6 +1,7 @@
 import requests
 import hashlib
 import time
+import logging
 import os
 import smtplib
 from email.mime.text import MIMEText
@@ -20,6 +21,37 @@ class Config:
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
     SMTP_PASSWORD = os.environ.get('HUILANGYUNXVFEI_SMTP_PASSWORD')
     RECIPIENT = 'wdsjwyf@qq.com'
+    
+    # 日志配置
+    LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+
+
+# =================== 日志系统 ===================
+def setup_logger():
+    """配置日志记录器"""
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    
+    # 文件处理器
+    log_file = os.path.join(Config.LOG_DIR, f'renewal_{datetime.now().strftime("%Y%m%d")}.log')
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    
+    # 控制台处理器
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    
+    # 格式化器
+    formatter = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+    
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    return logger
 
 # =================== 邮件服务 ===================
 def send_email(subject, content):
@@ -34,7 +66,7 @@ def send_email(subject, content):
             server.sendmail(Config.EMAIL_USER, [Config.RECIPIENT], msg.as_string())
         return True
     except Exception as e:
-        print(f"邮件发送失败: {str(e)}")
+        logger.error(f"邮件发送失败: {str(e)}")
         return False
 
 def format_result_html(result):
@@ -68,7 +100,7 @@ def format_result_html(result):
 
 def renew_host():
     try:
-        print("开始执行灰狼云主机续费操作...")
+        logger.info("开始执行灰狼云主机续费操作...")
         
         # 生成签名
         timestamp = str(int(time.time()))
@@ -84,30 +116,30 @@ def renew_host():
             'm': Config.RENEW_MONTH
         }
         
-        print(f"发送请求到: {url}, 参数: {payload}")
+        logger.info(f"发送请求到: {url}, 参数: {payload}")
         response = requests.post(url, data=payload, timeout=10)
         result = response.json()
         
         # 记录结果
-        print(f"API响应: {response.text}")
+        logger.info(f"API响应: {response.text}")
         
         # 发送邮件
         status_msg = status_map.get(result['code'], "未知状态")
         subject = f"灰狼云主机续费报告 - {status_msg}"
         email_content = format_result_html(result)
         if send_email(subject, email_content):
-            print("邮件发送成功")
+            logger.info("邮件发送成功")
         else:
-            print("邮件发送失败")
+            logger.error("邮件发送失败")
             
         return result
     except requests.exceptions.RequestException as e:
         error_msg = f"网络请求异常: {str(e)}"
-        print(error_msg)
+        logger.error(error_msg)
         return {'code': -1, 'msg': error_msg, 'data': None}
     except Exception as e:
         error_msg = f"程序异常: {str(e)}"
-        print(error_msg)
+        logger.error(error_msg)
         return {'code': -1, 'msg': error_msg, 'data': None}
 
 # 状态码映射
