@@ -18,6 +18,6 @@ jobs:
         run: pip install requests
       - name: Run renewal script
         env:
-          # HUILANGYUNXVFEI_SMTP_PASSWORD: ${{ secrets.HUILANGYUNXVFEI_SMTP_PASSWORD }}
-          HUILANGYUNXVFEI_SMTP_PASSWORD: ${{ vars.HUILANGYUNXVFEI_SMTP_PASSWORD }}
+          HUILANGYUNXVFEI_SMTP_PASSWORD: ${{ secrets.HUILANGYUNXVFEI_SMTP_PASSWORD }}
+          # HUILANGYUNXVFEI_SMTP_PASSWORD: ${{ vars.HUILANGYUNXVFEI_SMTP_PASSWORD }}
         run: python 灰狼云主机续费.py
