@@ -12,6 +12,7 @@ class Config:
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
     # EMAIL_PASSWORD = os.environ.get('TIXINGYOUXIANG_SMTP_PASSWORD')
     EMAIL_PASSWORD = 'Mifeng1728#'
+    print(f"当前获取到的EMAIL_PASSWORD环境变量值为: {EMAIL_PASSWORD}")
     RECIPIENT = 'wdsjwyf@qq.com'
 
     LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
