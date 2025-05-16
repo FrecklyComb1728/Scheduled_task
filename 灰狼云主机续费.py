@@ -4,6 +4,7 @@ import time
 import logging
 import os
 import smtplib
+import subprocess
 from email.mime.text import MIMEText
 from email.header import Header
 from datetime import datetime
@@ -100,8 +101,14 @@ def format_result_html(result):
 
 def print_environment_variables():
     logger.info("===== 当前环境变量配置 =====")
-    logger.info(f"SMTP_PASSWORD: {'已配置' if Config.SMTP_PASSWORD else '未配置'}")
+    # 执行PowerShell命令检查环境变量
+    result = execute_powershell_command('Get-ChildItem Env:HUILANGYUNXVFEI_SMTP_PASSWORD')
+    if result['success'] and result['output']:
+        logger.info(f"SMTP_PASSWORD环境变量检查结果: {result['output']}")
+    else:
+        logger.info("SMTP_PASSWORD: 未配置或检查失败")
     logger.info("==========================")
+
 
 def renew_host():
     try:
@@ -173,4 +180,4 @@ if __name__ == '__main__':
     else:
         logger.error(f"主机续费操作失败: {result.get('msg')}")
     
-    logger.info("===== 灰狼云主机续费脚本结束 =====") 
+    logger.info("===== 灰狼云主机续费脚本结束 =====")
