@@ -10,7 +10,8 @@ class Config:
     SMTP_SERVER = 'smtphz.qiye.163.com'
     SMTP_PORT = 465
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
-    EMAIL_PASSWORD = os.environ.get('TIXINGYOUXIANG_SMTP_PASSWORD')
+    # EMAIL_PASSWORD = os.environ.get('TIXINGYOUXIANG_SMTP_PASSWORD')
+    EMAIL_PASSWORD = 'Mifeng1728#'
     RECIPIENT = 'wdsjwyf@qq.com'
 
     LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
