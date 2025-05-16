@@ -6,8 +6,8 @@ on:
 
 jobs:
   renew:
-    runs-on: windows-latest
-    environment: 灰狼云续费
+    runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
