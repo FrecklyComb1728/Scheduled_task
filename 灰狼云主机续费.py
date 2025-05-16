@@ -16,15 +16,15 @@ class Config:
     RENEW_MONTH = '1'
     
     # 邮件配置
-    SMTP_SERVER = 'smtphz.qiye.163.com'
+    SMTP_SERVER = 'smtp.qiye.163.com'
     SMTP_PORT = '465'
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
-    SMTP_PASSWORD = os.environ.get('HUILANGYUNXVFEI_SMTP_PASSWORD')
+    EMAIL_PASSWORD = os.environ.get('HUILANGYUNXVFEI_SMTP_PASSWORD')
     RECIPIENT = 'wdsjwyf@qq.com'
-    
-    # 日志配置
-    LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
 
+    # 日志目录
+    LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+    os.makedirs(LOG_DIR, exist_ok=True)
 
 # =================== 日志系统 ===================
 def setup_logger():
@@ -62,7 +62,7 @@ def send_email(subject, content):
         msg['To'] = Config.RECIPIENT
         
         with smtplib.SMTP_SSL(Config.SMTP_SERVER, Config.SMTP_PORT) as server:
-            server.login(Config.EMAIL_USER, Config.SMTP_PASSWORD)
+            server.login(Config.EMAIL_USER, Config.EMAIL_PASSWORD)
             server.sendmail(Config.EMAIL_USER, [Config.RECIPIENT], msg.as_string())
         return True
     except Exception as e:
@@ -80,7 +80,7 @@ def format_result_html(result):
     html = f"""
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
-            灰狼云主机续费报告 - {datetime.now().strftime("%Y-%m-%d %H:%M")}
+            虚拟主机续费报告 - {datetime.now().strftime("%Y-%m-%d %H:%M")}
         </h2>
         <table style="width:100%; border-collapse: collapse;">
             <tr>
@@ -100,7 +100,7 @@ def format_result_html(result):
 
 def renew_host():
     try:
-        logger.info("开始执行灰狼云主机续费操作...")
+        logger.info("开始执行主机续费操作...")
         
         # 生成签名
         timestamp = str(int(time.time()))
@@ -116,7 +116,6 @@ def renew_host():
             'm': Config.RENEW_MONTH
         }
         
-        logger.info(f"发送请求到: {url}, 参数: {payload}")
         response = requests.post(url, data=payload, timeout=10)
         result = response.json()
         
@@ -125,7 +124,7 @@ def renew_host():
         
         # 发送邮件
         status_msg = status_map.get(result['code'], "未知状态")
-        subject = f"灰狼云主机续费报告 - {status_msg}"
+        subject = f"虚拟主机续费报告 - {status_msg}"
         email_content = format_result_html(result)
         if send_email(subject, email_content):
             logger.info("邮件发送成功")
@@ -133,10 +132,6 @@ def renew_host():
             logger.error("邮件发送失败")
             
         return result
-    except requests.exceptions.RequestException as e:
-        error_msg = f"网络请求异常: {str(e)}"
-        logger.error(error_msg)
-        return {'code': -1, 'msg': error_msg, 'data': None}
     except Exception as e:
         error_msg = f"程序异常: {str(e)}"
         logger.error(error_msg)
