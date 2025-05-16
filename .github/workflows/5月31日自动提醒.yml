@@ -16,6 +16,6 @@ jobs:
         with:
           python-version: '3.x'
       - name: Run renewal script
-        # env:
-          # TIXINGYOUXIANG_SMTP_PASSWORD: ${{ secrets.TIXINGYOUXIANG_SMTP_PASSWORD }}
+        env:
+          TIXINGYOUXIANG_SMTP_PASSWORD: ${{ secrets.TIXINGYOUXIANG_SMTP_PASSWORD }}
         run: python 5月31日自动提醒.py
