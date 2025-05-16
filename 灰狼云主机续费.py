@@ -16,7 +16,7 @@ class Config:
     RENEW_MONTH = '1'
     
     # 邮件配置
-    SMTP_SERVER = 'smtp.bee-zh.cn'
+    SMTP_SERVER = 'smtphz.qiye.163.com'
     SMTP_PORT = '465'
     EMAIL_USER = 'scheduled_task@bee-zh.cn'
     EMAIL_PASSWORD = os.environ.get('TIXINGYOUXIANG_SMTP_PASSWORD')
