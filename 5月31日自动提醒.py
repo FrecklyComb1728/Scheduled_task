@@ -1,9 +1,8 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
-from datetime import datetime
+import hashlib
+import time
 import logging
 import os
+import smtplib
 
 # =================== 配置参数 ===================
 class Config:
