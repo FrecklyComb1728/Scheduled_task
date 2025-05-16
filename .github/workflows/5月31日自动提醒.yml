@@ -1,12 +1,13 @@
 name: 5月31日自动提醒
 on:
   schedule:
-   - cron: "0 23 30 5 *"
+    - cron: "0 23 30 5 *"
   workflow_dispatch:
 
 jobs:
   renew:
     runs-on: ubuntu-latest
+    # environment: 灰狼云续费
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
