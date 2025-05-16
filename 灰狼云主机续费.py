@@ -4,7 +4,6 @@ import time
 import logging
 import os
 import smtplib
-import subprocess
 from email.mime.text import MIMEText
 from email.header import Header
 from datetime import datetime
@@ -23,9 +22,6 @@ class Config:
     SMTP_PASSWORD = os.environ.get('HUILANGYUNXVFEI_SMTP_PASSWORD')
     RECIPIENT = 'wdsjwyf@qq.com'
 
-    # 日志目录
-    LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
-    os.makedirs(LOG_DIR, exist_ok=True)
 
 # =================== 日志系统 ===================
 def setup_logger():
@@ -99,55 +95,6 @@ def format_result_html(result):
     """
     return html
 
-def print_environment_variables():
-    logger.info("===== 当前环境变量配置 =====")
-    # 执行PowerShell命令检查环境变量
-    result = execute_powershell_command('Get-ChildItem Env:HUILANGYUNXVFEI_SMTP_PASSWORD')
-    if result['success'] and result['output']:
-        logger.info(f"SMTP_PASSWORD环境变量检查结果: {result['output']}")
-    else:
-        logger.info("SMTP_PASSWORD: 未配置或检查失败")
-    logger.info("==========================")
-
-def execute_powershell_command(command):
-    """执行PowerShell命令并返回结果"""
-    try:
-        # 使用PowerShell执行命令
-        process = subprocess.run(
-            ['powershell', '-Command', command],
-            capture_output=True,
-            text=True,
-            shell=True
-        )
-        
-        # 记录命令执行情况
-        logger.info(f"执行PowerShell命令: {command}")
-        
-        if process.returncode == 0:
-            logger.info("命令执行成功")
-            if process.stdout:
-                logger.info(f"命令输出: {process.stdout}")
-            return {
-                'success': True,
-                'output': process.stdout,
-                'error': None
-            }
-        else:
-            logger.error(f"命令执行失败: {process.stderr}")
-            return {
-                'success': False,
-                'output': None,
-                'error': process.stderr
-            }
-    except Exception as e:
-        error_msg = f"执行PowerShell命令时发生错误: {str(e)}"
-        logger.error(error_msg)
-        return {
-            'success': False,
-            'output': None,
-            'error': error_msg
-        }
-
 def renew_host():
     try:
         logger.info("开始执行灰狼云主机续费操作...")
@@ -207,11 +154,6 @@ if __name__ == '__main__':
     logger = setup_logger()
     logger.info("===== 灰狼云主机续费脚本启动 =====")
     
-    # 检查环境变量配置
-    if not Config.SMTP_PASSWORD:
-        logger.warning("SMTP_PASSWORD环境变量未设置，邮件通知功能可能无法正常工作")
-    
-    result = renew_host()
     
     if result.get('code') == 1:
         logger.info("主机续费操作成功完成")
