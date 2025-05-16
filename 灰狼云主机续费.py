@@ -128,8 +128,6 @@ def renew_host():
         email_content = format_result_html(result)
         if send_email(subject, email_content):
             logger.info("邮件发送成功")
-        else:
-            logger.error("邮件发送失败")
             
         return result
     except Exception as e:
