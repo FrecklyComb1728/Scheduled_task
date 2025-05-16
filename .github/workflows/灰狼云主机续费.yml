@@ -6,7 +6,7 @@ on:
 
 jobs:
   renew:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: 灰狼云续费
     steps:
       - name: Checkout code

@@ -149,3 +149,7 @@ status_map = {
     404: "主机不存在",
     500: "系统错误"
 }
+
+if __name__ == '__main__':
+    logger = setup_logger()
+    result = renew_host()
